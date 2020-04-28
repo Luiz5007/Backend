@@ -8,8 +8,7 @@ app.use(cors())
 // diz ao express que receberei requisicoes em json
 app.use(express.json())
 
-app.get('/cadastro', (req, res) => {
-})
+app.get('/cadastro', (req, res) => {})
 
 app.listen(3333, () => {
   console.log('Server On')
