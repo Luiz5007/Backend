@@ -10,7 +10,11 @@ module.exports = {
           autoIncrement: true,
           allowNull: false
         },
-        name: {
+        email: {
+          type: Sequelize.STRING,
+          allowNull: false
+        },
+        password: {
           type: Sequelize.STRING,
           allowNull: false
         },
