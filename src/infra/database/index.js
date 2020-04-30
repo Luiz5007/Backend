@@ -6,6 +6,7 @@ const Users = require('../models/User')
 const connection = new Sequelize(dbConfig)
 
 Users.init(connection)
+// Users.sync({ force: true }) forca a tabela a ser dropada e recriada
 
 module.exports = connection
 
