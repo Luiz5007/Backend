@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 // import controllers
-const UserController = require('../controllers/UserController')
+const UserController = require('../controllers/userController')
 
 // Rota raiz
 router.get('/', async (req, res) => {

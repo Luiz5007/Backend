@@ -1,10 +1,10 @@
-const UserModel = require('../infra/models/User')
+const UserModel = require('../infra/models/user')
 
 module.exports = {
   async create (data) {
     try {
       const userCreated = await UserModel.create(data)
-      const user = await UserModel.findOne({
+      const user = await UserModel.findOne({ // ????
         where: { id: userCreated.id },
         attributes: { exclude: ['password'] }
       })

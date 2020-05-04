@@ -3,6 +3,8 @@ const app = express()
 const routes = require('./app/routes/routes')
 const cors = require('cors')
 
+require('dotenv').config()// variaveis de ambiente
+
 // filtra quem vai acessar o backend
 app.use(cors())
 

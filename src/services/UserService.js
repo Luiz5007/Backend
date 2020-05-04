@@ -1,5 +1,5 @@
-const UserRepository = require('../repositories/UserRepository')
-const UserModel = require('../infra/models/User')
+const UserRepository = require('../repositories/userRepository')
+const UserModel = require('../infra/models/user')
 
 module.exports = { // fazer o tratamento dos dados == regras de negocio
   async create ({ email, password, confirmPassword }) {
