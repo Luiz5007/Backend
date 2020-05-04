@@ -3,7 +3,11 @@ const UserModel = require('../infra/models/User')
 module.exports = {
   async create (data) {
     try {
-      const user = await UserModel.create(data)// falta exclude no password
+      const userCreated = await UserModel.create(data)
+      const user = await UserModel.findOne({
+        where: { id: userCreated.id },
+        attributes: { exclude: ['password'] }
+      })
       return user
     } catch (error) {
       throw new Error(error)
@@ -13,7 +17,7 @@ module.exports = {
   async index () {
     try {
       const users = await UserModel.findAll({
-        attributes: { exclude: ['password'] }// nao mostra passwords
+        attributes: { exclude: ['password'] }
       })
       return users
     } catch (error) {
@@ -24,7 +28,7 @@ module.exports = {
   async delete (userId) {
     try {
       await UserModel.destroy({
-        where: { id: userId } // tratar no caso de tentar excluir um q ja foi excluido
+        where: { id: userId }
       })
       return
     } catch (error) {
@@ -34,11 +38,11 @@ module.exports = {
 
   async update (userId, data) {
     try {
-      const response = UserModel.update( // tratar no caso de fazer update em um user deletado
+      await UserModel.update(
         data,
         { where: { id: userId } }
       )
-      return response
+      return
     } catch (error) {
       throw new Error(error)
     }

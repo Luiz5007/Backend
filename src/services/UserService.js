@@ -1,11 +1,26 @@
 const UserRepository = require('../repositories/UserRepository')
+const UserModel = require('../infra/models/User')
 
 module.exports = { // fazer o tratamento dos dados == regras de negocio
   async create ({ email, password, confirmPassword }) {
-    // futuramente
-    // recurso pra validar dominio stefanini
-    // confirmar password
-    // verificar se o password tem mais 6 caracters
+    const errors = []
+    const user = new UserModel()
+
+    if (!user.validationEmail(email)) {
+      errors.push('Email Inválido! Email deve conter domínio @stefanini.com')
+    }
+
+    if (!user.validationPassword(password, confirmPassword).lengthPassword) {
+      errors.push('Senha Inválida! Senha deve ser maior que 6 caracteres!')
+    }
+
+    if (!user.validationPassword(password, confirmPassword).equalPasswords) {
+      errors.push('Senhas diferentes!')
+    }
+
+    if (errors.length > 0) {
+      return errors
+    }
 
     const data = {
       email,
@@ -38,10 +53,16 @@ module.exports = { // fazer o tratamento dos dados == regras de negocio
     }
   },
 
-  async update (userId, data) {
+  async update (userId, { email, password, confirmPassword }) {
+    // fazer tratamento dos dados aqui tbm
+    const data = {
+      email,
+      password
+    }
+
     try {
-      const responseRepository = UserRepository.update(userId, data)
-      return responseRepository
+      await UserRepository.update(userId, data)
+      return
     } catch (error) {
       throw new Error(error)
     }

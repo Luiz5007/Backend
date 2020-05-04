@@ -9,4 +9,35 @@ class User extends Model {
   }
 }
 
+// validationEmail
+// validationPassword
+User.prototype.validationEmail = (email) => {
+  const response = email.search('@stefanini.com')
+
+  if (response !== -1) {
+    return true
+  } else {
+    return false
+  }
+}
+
+User.prototype.validationPassword = (password, confirmPassword) => {
+  let equalPasswords = false
+  let lengthPassword = false
+
+  if (password.length > 5) {
+    lengthPassword = true
+  } else {
+    lengthPassword = false
+  }
+
+  if (password === confirmPassword) {
+    equalPasswords = true
+  } else {
+    equalPasswords = false
+  }
+
+  return { equalPasswords, lengthPassword }
+}
+
 module.exports = User

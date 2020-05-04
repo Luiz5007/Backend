@@ -22,8 +22,8 @@ module.exports = {
 
   async update (req, res) {
     try {
-      const responseService = await UserService.update(req.params.id, req.body)
-      return res.status(200).json(responseService)
+      await UserService.update(req.params.id, req.body)
+      return res.status(200).json({ msg: 'User updated! ' })
     } catch (error) {
       return res.status(500).json({ error: 'Server Internal Error!' })
     }
