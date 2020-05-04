@@ -1,9 +1,8 @@
 const UserRepository = require('../repositories/userRepository')
 const UserModel = require('../infra/models/user')
 
-module.exports = {
-  // fazer o tratamento dos dados == regras de negocio
-  async create({ email, password, confirmPassword }) {
+module.exports = { // fazer o tratamento dos dados == regras de negocio
+  async create ({ email, password, confirmPassword }) {
     const errors = []
     const user = new UserModel()
 
@@ -25,7 +24,7 @@ module.exports = {
 
     const data = {
       email,
-      password,
+      password
     }
 
     try {
@@ -36,7 +35,7 @@ module.exports = {
     }
   },
 
-  async index() {
+  async index () {
     try {
       const responseRepository = await UserRepository.index()
       return responseRepository
@@ -45,7 +44,7 @@ module.exports = {
     }
   },
 
-  async delete(userId) {
+  async delete (userId) {
     try {
       await UserRepository.delete(userId)
       return
@@ -54,11 +53,11 @@ module.exports = {
     }
   },
 
-  async update(userId, { email, password, confirmPassword }) {
+  async update (userId, { email, password, confirmPassword }) {
     // fazer tratamento dos dados aqui tbm
     const data = {
       email,
-      password,
+      password
     }
 
     try {
@@ -67,5 +66,5 @@ module.exports = {
     } catch (error) {
       throw new Error(error)
     }
-  },
+  }
 }

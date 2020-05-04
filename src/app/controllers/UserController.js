@@ -1,7 +1,7 @@
 const UserService = require('../../services/userService')
 
 module.exports = {
-  async create(req, res) {
+  async create (req, res) {
     try {
       const responseService = await UserService.create(req.body) // esperando resposta do service
       // delete responseService.password // deleta atributo or exclude
@@ -11,8 +11,7 @@ module.exports = {
     }
   },
 
-  async index(req, res) {
-    // read
+  async index (req, res) { // read
     try {
       const responseService = await UserService.index()
       return res.status(200).json(responseService)
@@ -21,7 +20,7 @@ module.exports = {
     }
   },
 
-  async update(req, res) {
+  async update (req, res) {
     try {
       await UserService.update(req.params.id, req.body)
       return res.status(200).json({ msg: 'User updated! ' })
@@ -30,12 +29,12 @@ module.exports = {
     }
   },
 
-  async delete(req, res) {
+  async delete (req, res) {
     try {
       await UserService.delete(req.params.id)
       return res.status(204).json({ msg: 'User deleted! ' })
     } catch (error) {
       return res.status(500).json({ error: 'Server Internal Error!' })
     }
-  },
+  }
 }
