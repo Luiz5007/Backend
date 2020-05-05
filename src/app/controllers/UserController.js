@@ -1,12 +1,23 @@
 const UserService = require('../../services/userService')
+const UserModel = require('../../infra/models/user')
 
 module.exports = {
   async create(req, res) {
     try {
+      const user = new UserModel()
+      const errors = await user.base.getErrors()
+
       const responseService = await UserService.create(req.body) // esperando resposta do service
       // delete responseService.password // deleta atributo or exclude
+
+      if (errors.length > 0) {
+        return res.status(400).json(responseService)
+      }
+
       return res.status(200).json(responseService)
     } catch (error) {
+      console.log(error)
+
       return res.status(500).json({ error: 'Server Internal Error!' })
     }
   },
