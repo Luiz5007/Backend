@@ -3,7 +3,10 @@ const UserModel = require('../infra/models/user')
 module.exports = {
   async create(data) {
     try {
-      const userCreated = await UserModel.create(data)
+      const userCreated = await UserModel.create({
+        email: data.email,
+        password: data.password,
+      })
       // ????
       const user = await UserModel.findOne({
         where: { id: userCreated.id },

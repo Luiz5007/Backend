@@ -1,19 +1,20 @@
-class BaseModel {
-  constructor() {
+const { Model } = require('sequelize')
+
+class BaseModel extends Model {
+  static init(attributes, options) {
+    super.init(attributes, options)
+  }
+
+  constructor(values, options) {
+    super(values, options)
     this.errors = []
   }
 
-  static async getErrors() {
-    if (!this.errors) {
-      this.errors = []
-    }
+  async getErrors() {
     return this.errors
   }
 
-  static async addErrors(err) {
-    if (!this.errors) {
-      this.errors = []
-    }
+  async addErrors(err) {
     this.errors.push(err)
   }
 }

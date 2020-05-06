@@ -9,7 +9,7 @@ module.exports = {
     await user.validationEmail(email)
     await user.validationPassword(password, confirmPassword)
 
-    const errors = await user.base.getErrors()
+    const errors = await user.getErrors()
 
     if (errors.length > 0) {
       return errors

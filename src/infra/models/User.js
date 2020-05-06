@@ -1,14 +1,14 @@
-const { Model, DataTypes } = require('sequelize')
+const { DataTypes } = require('sequelize')
 const BaseModel = require('./baseModel')
 
-class User extends Model {
+class User extends BaseModel {
   static init(sequelize) {
     super.init(
       {
         email: DataTypes.STRING,
         password: DataTypes.STRING,
       },
-      { sequelize },
+      { sequelize, tableName: 'users' },
     )
   }
 
@@ -16,7 +16,7 @@ class User extends Model {
     const response = email.search('@stefanini.com')
 
     if (response === -1) {
-      await this.base.addErrors(
+      await this.addErrors(
         'Email Inválido! Email deve conter domínio @stefanini.com',
       )
     }
@@ -24,17 +24,15 @@ class User extends Model {
 
   async validationPassword(password, confirmPassword) {
     if (password.length < 6) {
-      await this.base.addErrors(
+      await this.addErrors(
         'Senha Inválida! Senha deve ser maior que 6 caracteres!',
       )
     }
 
     if (password !== confirmPassword) {
-      await this.base.addErrors('Senhas diferentes!')
+      await this.addErrors('Senhas diferentes!')
     }
   }
 }
-
-User.prototype.base = BaseModel
 
 module.exports = User
