@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize')
 const BaseModel = require('./baseModel')
+const bcrypt = require('bcrypt')
 
 class User extends BaseModel {
   static init(sequelize) {
@@ -32,6 +33,19 @@ class User extends BaseModel {
     if (password !== confirmPassword) {
       await this.addErrors('Senhas diferentes!')
     }
+  }
+
+  async hashPassword(password) {
+    const saltRounds = 10
+
+    return await bcrypt
+      .hash(password, saltRounds)
+      .then((hash) => {
+        return hash
+      })
+      .catch((err) => {
+        throw new Error(err)
+      })
   }
 }
 

@@ -9,20 +9,26 @@ module.exports = {
     await user.validationEmail(email)
     await user.validationPassword(password, confirmPassword)
 
+    if (await UserRepository.findByEmail(email)) {
+      user.addErrors('Email ja existente no sistema!')
+    }
+
     const errors = await user.getErrors()
 
     if (errors.length > 0) {
-      return { errors }
+      return user
     }
+
+    const hashPassword = await user.hashPassword(password)
 
     const data = {
       email,
-      password,
+      password: hashPassword,
     }
-
+    // validar email
     try {
       const responseRepository = await UserRepository.create(data)
-      return { responseRepository }
+      return responseRepository
     } catch (error) {
       throw new Error(error)
     }
@@ -58,14 +64,16 @@ module.exports = {
       return { errors }
     }
 
+    const hashPassword = await user.hashPassword(password)
+
     const data = {
       email,
-      password,
+      password: hashPassword,
     }
 
     try {
       const responseRepository = await UserRepository.update(userId, data)
-      return responseRepository
+      return { responseRepository }
     } catch (error) {
       throw new Error(error)
     }

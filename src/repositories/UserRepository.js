@@ -1,11 +1,11 @@
 const UserModel = require('../infra/models/user')
 
 module.exports = {
-  async create(data) {
+  async create({ email, password }) {
     try {
       const userCreated = await UserModel.create({
-        email: data.email,
-        password: data.password,
+        email: email,
+        password: password,
       })
       // ????
       const user = await UserModel.findOne({
@@ -46,6 +46,20 @@ module.exports = {
     try {
       const response = await UserModel.update(data, { where: { id: userId } })
       return response
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
+
+  async findByEmail(email) {
+    try {
+      const user = await UserModel.findOne({ where: { email: email } })
+
+      if (user) {
+        return true
+      }
+
+      return false
     } catch (error) {
       throw new Error(error)
     }
