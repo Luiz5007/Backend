@@ -44,8 +44,8 @@ module.exports = {
 
   async update(userId, data) {
     try {
-      await UserModel.update(data, { where: { id: userId } })
-      return
+      const response = await UserModel.update(data, { where: { id: userId } })
+      return response
     } catch (error) {
       throw new Error(error)
     }

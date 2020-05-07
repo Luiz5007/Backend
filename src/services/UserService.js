@@ -12,7 +12,7 @@ module.exports = {
     const errors = await user.getErrors()
 
     if (errors.length > 0) {
-      return errors
+      return { errors }
     }
 
     const data = {
@@ -22,7 +22,7 @@ module.exports = {
 
     try {
       const responseRepository = await UserRepository.create(data)
-      return responseRepository
+      return { responseRepository }
     } catch (error) {
       throw new Error(error)
     }
@@ -47,15 +47,25 @@ module.exports = {
   },
 
   async update(userId, { email, password, confirmPassword }) {
-    // fazer tratamento dos dados aqui tbm
+    const user = new UserModel()
+
+    await user.validationEmail(email)
+    await user.validationPassword(password, confirmPassword)
+
+    const errors = await user.getErrors()
+
+    if (errors.length > 0) {
+      return { errors }
+    }
+
     const data = {
       email,
       password,
     }
 
     try {
-      await UserRepository.update(userId, data)
-      return
+      const responseRepository = await UserRepository.update(userId, data)
+      return responseRepository
     } catch (error) {
       throw new Error(error)
     }
