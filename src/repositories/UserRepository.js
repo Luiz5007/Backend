@@ -44,8 +44,10 @@ module.exports = {
 
   async update(userId, data) {
     try {
-      const response = await UserModel.update(data, { where: { id: userId } })
-      return response
+      await UserModel.update(data, { where: { id: userId } })
+
+      const user = await this.findById(userId)
+      return user
     } catch (error) {
       throw new Error(error)
     }
@@ -60,6 +62,20 @@ module.exports = {
       }
 
       return false
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
+
+  async findById(userId) {
+    try {
+      const user = UserModel.findByPk(userId, {
+        attributes: {
+          exclude: 'password',
+        },
+      })
+
+      return user
     } catch (error) {
       throw new Error(error)
     }

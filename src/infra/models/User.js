@@ -21,6 +21,13 @@ class User extends BaseModel {
         'Email Inválido! Email deve conter domínio @stefanini.com',
       )
     }
+
+    const errors = await this.getErrors()
+    if (errors.length === 0) {
+      return true
+    } else {
+      return false
+    }
   }
 
   async validationPassword(password, confirmPassword) {
@@ -32,6 +39,13 @@ class User extends BaseModel {
 
     if (password !== confirmPassword) {
       await this.addErrors('Senhas diferentes!')
+    }
+
+    const errors = await this.getErrors()
+    if (errors.length === 0) {
+      return true
+    } else {
+      return false
     }
   }
 
