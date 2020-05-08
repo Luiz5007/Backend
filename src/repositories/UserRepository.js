@@ -7,11 +7,7 @@ module.exports = {
         email: email,
         password: password,
       })
-      // ????
-      const user = await UserModel.findOne({
-        where: { id: userCreated.id },
-        attributes: { exclude: ['password'] },
-      })
+      const user = await this.findById(userCreated.id)
       return user
     } catch (error) {
       throw new Error(error)
