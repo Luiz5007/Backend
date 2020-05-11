@@ -34,6 +34,22 @@ module.exports = {
     }
   },
 
+  async findById(userId) {
+    try {
+      let user = await UserRepository.findById(userId)
+
+      if (user) {
+        return user
+      } else {
+        user = new UserModel()
+        user.addErrors('User not exist!')
+        return user
+      }
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
+
   async index() {
     try {
       const responseRepository = await UserRepository.index()
