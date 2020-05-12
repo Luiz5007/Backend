@@ -2,14 +2,25 @@ const Sequelize = require('sequelize')
 const dbConfig = require('../../config/database')
 const User = require('../models/userModel')
 const Biography = require('../models/biographyModel')
-const connection = new Sequelize(dbConfig)
 
-User.init(connection)
+const models = [User, Biography]
+class DataBase {
+  constructor() {
+    this.connection = new Sequelize(dbConfig)
+    this.init()
+    this.associate()
+  }
 
-// Users.sync({ force: true }) forca a tabela a ser dropada e recriada
-Biography.init(connection)
+  init() {
+    models.map((model) => model.init(this.connection))
+  }
 
-module.exports = connection
+  associate() {
+    models.map((model) => model.associate(this.connection.models))
+  }
+}
+
+module.exports = new DataBase()
 
 // npx sequelize db:create
 // npx sequelize migration:create --name=XXXXXXX

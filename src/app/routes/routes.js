@@ -19,13 +19,13 @@ router.put(userUrl + '/:id', UserController.update) // update User
 router.delete(userUrl + '/:id', UserController.delete) // delete User
 
 const biographyUrl = '/biography'
-router.post(userUrl + '/:id' + biographyUrl, (req, res) => {
-  const biography = BiographyModel.create({
+router.post(userUrl + '/:user_id' + biographyUrl, async (req, res) => {
+  const biography = await BiographyModel.create({
     full_name: 'Josué',
     nickname: 'Jow',
     birthday: Date.now(),
     about_you: 'Hellow Wolrd! Nasci hoje e já sou estag!!!',
-    user_id: 2,
+    user_id: req.params.user_id,
   })
 
   return res.json(biography)
