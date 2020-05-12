@@ -1,5 +1,5 @@
 const UserRepository = require('../repositories/userRepository')
-const UserModel = require('../infra/models/user')
+const UserModel = require('../infra/models/userModel')
 
 module.exports = {
   // fazer o tratamento dos dados == regras de negocio

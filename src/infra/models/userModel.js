@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize')
 const BaseModel = require('./baseModel')
+const BiographyModel = require('./biographyModel')
 const bcrypt = require('bcrypt')
 
 class User extends BaseModel {
@@ -62,5 +63,7 @@ class User extends BaseModel {
       })
   }
 }
+
+User.belongsTo(BiographyModel, { foreignKey: 'user_id', as: 'biographies' })
 
 module.exports = User

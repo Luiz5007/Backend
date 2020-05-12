@@ -1,4 +1,4 @@
-const UserModel = require('../infra/models/user')
+const UserModel = require('../infra/models/userModel')
 
 module.exports = {
   async create({ email, password }) {

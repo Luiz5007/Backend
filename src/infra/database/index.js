@@ -1,12 +1,13 @@
 const Sequelize = require('sequelize')
 const dbConfig = require('../../config/database')
-
-const Users = require('../models/user')
-
+const User = require('../models/userModel')
+const Biography = require('../models/biographyModel')
 const connection = new Sequelize(dbConfig)
 
-Users.init(connection)
+User.init(connection)
+
 // Users.sync({ force: true }) forca a tabela a ser dropada e recriada
+Biography.init(connection)
 
 module.exports = connection
 
