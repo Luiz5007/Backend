@@ -1,3 +1,5 @@
+const biographyService = require('../../services/biographyService')
+
 module.exports = {
   async create(req, res) {
     try {

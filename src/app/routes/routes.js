@@ -1,8 +1,9 @@
 const express = require('express')
 const router = express.Router()
-const BiographyModel = require('../../infra/models/biographyModel')
+
 // import controllers
-const UserController = require('../controllers/userController')
+const userController = require('../controllers/userController')
+const biographyController = require('../controllers/biographyController')
 
 // Rota raiz
 router.get('/', async (req, res) => {
@@ -12,23 +13,13 @@ router.get('/', async (req, res) => {
 // Rotas gerais
 // User
 const userUrl = '/users'
-router.post(userUrl, UserController.create) // create User
-router.get(userUrl, UserController.index) // read Users
-router.get(userUrl + '/:id', UserController.findById) // read One User
-router.put(userUrl + '/:id', UserController.update) // update User
-router.delete(userUrl + '/:id', UserController.delete) // delete User
+router.post(userUrl, userController.create) // create User
+router.get(userUrl, userController.index) // read Users
+router.get(`${userUrl}/:id`, userController.findById) // read One User
+router.put(`${userUrl}/:id`, userController.update) // update User
+router.delete(`${userUrl}/:id`, userController.delete) // delete User
 
 const biographyUrl = '/biography'
-router.post(userUrl + '/:user_id' + biographyUrl, async (req, res) => {
-  const biography = await BiographyModel.create({
-    full_name: 'Josué',
-    nickname: 'Jow',
-    birthday: Date.now(),
-    about_you: 'Hellow Wolrd! Nasci hoje e já sou estag!!!',
-    user_id: req.params.user_id,
-  })
-
-  return res.json(biography)
-})
+router.post(`${userUrl}/:userId${biographyUrl}`, biographyController.create)
 
 module.exports = router

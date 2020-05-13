@@ -1,9 +1,10 @@
 const Sequelize = require('sequelize')
 const dbConfig = require('../../config/database')
-const User = require('../models/userModel')
-const Biography = require('../models/biographyModel')
+const user = require('../models/userModel')
+const biography = require('../models/biographyModel')
 
-const models = [User, Biography]
+const models = [user, biography]
+
 class DataBase {
   constructor() {
     this.connection = new Sequelize(dbConfig)

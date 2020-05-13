@@ -1,9 +1,9 @@
-const UserModel = require('../infra/models/userModel')
+const userModel = require('../infra/models/userModel')
 
 module.exports = {
   async create({ email, password }) {
     try {
-      const userCreated = await UserModel.create({
+      const userCreated = await userModel.create({
         email: email,
         password: password,
       })
@@ -16,7 +16,7 @@ module.exports = {
 
   async index() {
     try {
-      const users = await UserModel.findAll({
+      const users = await userModel.findAll({
         attributes: { exclude: ['password'] },
       })
       return users
@@ -27,7 +27,7 @@ module.exports = {
 
   async delete(userId) {
     try {
-      await UserModel.destroy({
+      await userModel.destroy({
         where: {
           id: userId,
         },
@@ -40,7 +40,7 @@ module.exports = {
 
   async update(userId, data) {
     try {
-      await UserModel.update(data, { where: { id: userId } })
+      await userModel.update(data, { where: { id: userId } })
 
       const user = await this.findById(userId)
       return user
@@ -51,7 +51,7 @@ module.exports = {
 
   async findByEmail(email) {
     try {
-      const user = await UserModel.findOne({ where: { email: email } })
+      const user = await userModel.findOne({ where: { email: email } })
 
       if (user) {
         return true
@@ -65,7 +65,7 @@ module.exports = {
 
   async findById(userId) {
     try {
-      const user = UserModel.findByPk(userId, {
+      const user = userModel.findByPk(userId, {
         attributes: {
           exclude: 'password',
         },

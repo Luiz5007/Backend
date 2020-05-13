@@ -1,4 +1,4 @@
-const UserRepository = require('../repositories/userRepository')
+const userRepository = require('../repositories/userRepository')
 const UserModel = require('../infra/models/userModel')
 
 module.exports = {
@@ -10,7 +10,7 @@ module.exports = {
       await user.validationEmail(email)
       await user.validationPassword(password, confirmPassword)
 
-      if (await UserRepository.findByEmail(email)) {
+      if (await userRepository.findByEmail(email)) {
         user.addErrors('Email ja existente no sistema!')
       }
 
@@ -27,7 +27,7 @@ module.exports = {
         password: hashPassword,
       }
 
-      const responseRepository = await UserRepository.create(data)
+      const responseRepository = await userRepository.create(data)
       return responseRepository
     } catch (error) {
       throw new Error(error)
@@ -36,7 +36,7 @@ module.exports = {
 
   async findById(userId) {
     try {
-      let user = await UserRepository.findById(userId)
+      let user = await userRepository.findById(userId)
 
       if (user) {
         return user
@@ -52,7 +52,7 @@ module.exports = {
 
   async index() {
     try {
-      const responseRepository = await UserRepository.index()
+      const responseRepository = await userRepository.index()
       return responseRepository
     } catch (error) {
       throw new Error(error)
@@ -61,10 +61,10 @@ module.exports = {
 
   async delete(userId) {
     try {
-      let user = await UserRepository.findById(userId)
+      let user = await userRepository.findById(userId)
 
       if (user) {
-        await UserRepository.delete(userId)
+        await userRepository.delete(userId)
         user = new UserModel()
         return user
       } else {
@@ -79,7 +79,7 @@ module.exports = {
 
   async update(userId, { email, password, confirmPassword }) {
     try {
-      let user = await UserRepository.findById(userId)
+      let user = await userRepository.findById(userId)
 
       if (user) {
         const data = {}
@@ -87,7 +87,7 @@ module.exports = {
         if (email) {
           if (await user.validationEmail(email)) {
             if (
-              (await UserRepository.findByEmail(email)) &&
+              (await userRepository.findByEmail(email)) &&
               email !== user.email
             ) {
               user.addErrors('Email ja existente no sistema!')
@@ -111,7 +111,7 @@ module.exports = {
 
         data.password = await user.hashPassword(data.password)
 
-        const responseRepository = await UserRepository.update(userId, data)
+        const responseRepository = await userRepository.update(userId, data)
         return responseRepository
       } else {
         user = new UserModel()

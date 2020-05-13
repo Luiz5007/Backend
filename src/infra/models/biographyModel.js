@@ -5,10 +5,20 @@ class Biography extends BaseModel {
   static init(sequelize) {
     super.init(
       {
-        full_name: DataTypes.STRING,
+        fullName: {
+          type: DataTypes.STRING,
+          field: 'full_name',
+        },
         nickname: DataTypes.STRING,
         birthday: DataTypes.DATE,
-        about_you: DataTypes.TEXT,
+        aboutYou: {
+          type: DataTypes.TEXT,
+          field: 'about_you',
+        },
+        userId: {
+          type: DataTypes.INTEGER,
+          field: 'user_id',
+        },
       },
       { sequelize, tableName: 'biographies' },
     )
