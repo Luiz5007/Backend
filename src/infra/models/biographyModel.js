@@ -29,10 +29,6 @@ class Biography extends BaseModel {
   }
 
   async validationFullName(fullName) {
-    console.log('Nome => ' + fullName)
-    console.log('Tamanho => ' + fullName.length)
-    console.log('Validation => ' + fullName.length < 5)
-
     if (fullName.length < 5) {
       await this.addErrors('Nome completo muito curto!')
     }
@@ -47,13 +43,7 @@ class Biography extends BaseModel {
   }
 
   async validationNickname(nickname) {
-    console.log('Nome => ' + nickname)
-    console.log('Tamanho => ' + nickname.length)
-    console.log('Validation => ' + nickname.length < 5)
-
     if (nickname.length < 2) {
-      console.log('mando o erro')
-
       await this.addErrors('Apelido muito curto! Campo Opcional!')
     }
 

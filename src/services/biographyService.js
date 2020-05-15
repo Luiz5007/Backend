@@ -7,7 +7,6 @@ module.exports = {
     try {
       // primeiro validar os dados (identificar usuário existente)
       const biography = new BiographyModel()
-      // console.log(biography)
 
       const user = await userRepository.findById(userId)
 
