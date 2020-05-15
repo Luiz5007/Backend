@@ -1,0 +1,71 @@
+Migrations 
+
+Campos facutatvios:
+nickname
+birthday
+about_you
+
+
+
+
+
+
+
+Regras de Negócio
+
+
+
+
+
+
+
+
+
+
+
+
+
+create : {
+ - verificar se o usuário da rota existe no DB de users, se sim: prosseguir
+      importar (método do userRepository)
+ - verificar se ja existe uma biografia com o userId da rota (
+     try {
+         if (findById(userId)){
+            return error
+         } else {
+             create(biography)
+         }
+        
+ )
+}
+
+update : {
+ - preencher o userId da rota com o userId logado (futuramente)
+ - verificar se o usuário da rota existe no DB de users, se sim: prosseguir 
+      (método do userRepository [já importado])
+ - verificar se existe uma biografia com o id inserido e também, se o userId dela
+bate com inserido na rota 
+       try { 
+        if (findById({ where: userId da bio é igual a userId da rota})){
+           biography.update
+        } else {
+            return error
+        }
+        }
+        
+delete : {
+ - verificar se o usuário da rota existe no DB de users, se sim: prosseguir 
+       (método do userRepository [já importado])
+ - verificar se existe uma biografia com o id inserido e também, se o userId dela
+bate com o da rota
+        try { 
+          if (findById({ where: userId da bio é igual a userId da rota})){
+           biography.update
+        } else {
+            return error
+        }
+        }
+        
+Solucoes: {
+- metodo userRepository
+- findById({ where: userId da bio é igual a userId da rota}),

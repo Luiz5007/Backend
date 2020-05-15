@@ -26,5 +26,9 @@ router.put(
   `${userUrl}/:userId${biographyUrl}/:bioId`,
   biographyController.update,
 )
+router.delete(
+  `${userUrl}/:userId${biographyUrl}/:bioId`,
+  biographyController.delete,
+)
 
 module.exports = router

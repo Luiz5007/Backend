@@ -7,9 +7,13 @@ module.exports = {
         req.params.userId,
         req.body,
       )
+      const errors = await responseService.getErrors()
+      if (errors.length > 0) {
+        return res.status(400).json(errors)
+      }
       return res.status(200).json(responseService)
     } catch (error) {
-      // console.log(error)
+      console.log(error)
       return res.status(500).json({ error: 'Server Internal Error!' })
     }
   },
@@ -21,9 +25,19 @@ module.exports = {
         req.params.bioId,
         req.params.userId,
       )
-      return res.status(200).json({ msg: 'User Updated!' })
+      return res.status(200).json({ msg: 'Biography Updated!' })
     } catch (error) {
       return res.status(500).json({ error: 'Server Internal Error!' })
+    }
+  },
+
+  async delete(req, res) {
+    try {
+      await biographyService.delete(req.params.userId, req.params.bioId)
+      return res.status(200).json({ msg: 'Biography Deleted!' })
+    } catch (error) {
+      console.log(error)
+      return res.status(500).json({ error: 'Server Internal Error! ' })
     }
   },
 }

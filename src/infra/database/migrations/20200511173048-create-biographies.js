@@ -15,11 +15,11 @@ module.exports = {
       },
       nickname: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       birthday: {
         type: Sequelize.DATE,
-        allowNull: false,
+        allowNull: true,
       },
       about_you: {
         type: Sequelize.TEXT,
