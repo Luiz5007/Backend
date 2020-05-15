@@ -5,9 +5,14 @@ nickname
 birthday
 about_you
 
+validações:
+fullName - feito
+nickname - feito
+aboutYou - feito
+birthday - (agora)
 
-
-
+update
+delete - choraivus
 
 
 

@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize')
 const BaseModel = require('./baseModel')
+const moment = require('moment')
 
 class Biography extends BaseModel {
   static init(sequelize) {
@@ -33,6 +34,11 @@ class Biography extends BaseModel {
       await this.addErrors('Nome completo muito curto!')
     }
 
+    if (fullName.length > 255) {
+      await this.addErrors(
+        'Nome completo muito longo! Limite de 255 caracteres',
+      )
+    }
     const errors = await this.getErrors()
 
     if (errors.length > 0) {
@@ -47,6 +53,9 @@ class Biography extends BaseModel {
       await this.addErrors('Apelido muito curto! Campo Opcional!')
     }
 
+    if (nickname.length > 255) {
+      await this.addErrors('Apelido muito longo! Limite de 255 caracteres')
+    }
     const errors = await this.getErrors()
 
     if (errors.length > 0) {
@@ -56,7 +65,37 @@ class Biography extends BaseModel {
     return true
   }
 
-  // async validationBirthday()
+  async validationAboutYou(aboutYou) {
+    if (aboutYou.length < 2) {
+      await this.addErrors('Descrição muito curta! Campo Opcional!')
+    }
+
+    if (aboutYou.length > 500) {
+      await this.addErrors('Descrição muito longa! Limite de 500 caracteres')
+    }
+    const errors = await this.getErrors()
+
+    if (errors.length > 0) {
+      return false
+    }
+
+    return true
+  }
+
+  async validationBirthday(birthday) {
+    const today = moment().format('YYYY-MM-DD')
+    if (birthday >= today) {
+      await this.addErrors('Data de nascimento inválida!')
+    }
+
+    const errors = await this.getErrors()
+
+    if (errors.length > 0) {
+      return false
+    }
+
+    return true
+  }
 }
 
 module.exports = Biography

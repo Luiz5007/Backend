@@ -15,7 +15,9 @@ module.exports = {
       await biographyModel.update(data, {
         where: { id: bioId, userId },
       })
-      return
+
+      const biography = await this.findById(userId, bioId)
+      return biography
     } catch (error) {
       throw new Error(error)
     }
@@ -34,6 +36,17 @@ module.exports = {
   async findByUserId(userId) {
     try {
       const biography = await biographyModel.findOne({ where: { userId } })
+      return biography
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
+
+  async findById(userId, bioId) {
+    try {
+      const biography = await biographyModel.findByPk(bioId, {
+        where: { userId },
+      })
       return biography
     } catch (error) {
       throw new Error(error)
