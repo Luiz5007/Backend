@@ -18,6 +18,7 @@ module.exports = {
     try {
       const users = await userModel.findAll({
         attributes: { exclude: ['password'] },
+        include: { association: 'biography' },
       })
       return users
     } catch (error) {
@@ -69,6 +70,7 @@ module.exports = {
         attributes: {
           exclude: 'password',
         },
+        include: { association: 'biography' },
       })
 
       return user

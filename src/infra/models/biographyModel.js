@@ -29,27 +29,41 @@ class Biography extends BaseModel {
   }
 
   async validationFullName(fullName) {
-    if (fullName.lenght < 5) {
+    console.log('Nome => ' + fullName)
+    console.log('Tamanho => ' + fullName.length)
+    console.log('Validation => ' + fullName.length < 5)
+
+    if (fullName.length < 5) {
       await this.addErrors('Nome completo muito curto!')
     }
+
     const errors = await this.getErrors()
-    if (errors.length === 0) {
-      return true
-    } else {
+
+    if (errors.length > 0) {
       return false
     }
+
+    return true
   }
 
   async validationNickname(nickname) {
-    if (nickname.lenght < 2) {
+    console.log('Nome => ' + nickname)
+    console.log('Tamanho => ' + nickname.length)
+    console.log('Validation => ' + nickname.length < 5)
+
+    if (nickname.length < 2) {
+      console.log('mando o erro')
+
       await this.addErrors('Apelido muito curto! Campo Opcional!')
     }
+
     const errors = await this.getErrors()
-    if (errors.lenght === 0) {
-      return true
-    } else {
+
+    if (errors.length > 0) {
       return false
     }
+
+    return true
   }
 
   // async validationBirthday()

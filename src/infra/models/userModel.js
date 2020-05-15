@@ -27,11 +27,12 @@ class User extends BaseModel {
     }
 
     const errors = await this.getErrors()
-    if (errors.length === 0) {
-      return true
-    } else {
+
+    if (errors.length > 0) {
       return false
     }
+
+    return true
   }
 
   async validationPassword(password, confirmPassword) {
@@ -46,11 +47,12 @@ class User extends BaseModel {
     }
 
     const errors = await this.getErrors()
-    if (errors.length === 0) {
-      return true
-    } else {
+
+    if (errors.length > 0) {
       return false
     }
+
+    return true
   }
 
   async hashPassword(password) {

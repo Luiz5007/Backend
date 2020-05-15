@@ -25,6 +25,7 @@ module.exports = {
       // verificar duplicidades - não podem existir mais de uma biografia com o mesmo user_id
 
       const data = { userId }
+
       if (fullName) {
         if (await biography.validationFullName(fullName)) {
           data.fullName = fullName
@@ -34,17 +35,19 @@ module.exports = {
           'Preencha seu Nome Completo. Campo Obrigatório!',
         )
       }
+
       if (nickname) {
         if (await biography.validationNickname(nickname)) {
           data.nickname = nickname
         }
-        console.log('entrou aqui')
       }
+
       const errors = await biography.getErrors()
+
       if (errors.length > 0) {
         return biography
       }
-      console.log(data)
+
       const responseRepository = await biographyRepository.create(data)
       return responseRepository
     } catch (error) {
