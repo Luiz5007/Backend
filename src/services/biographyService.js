@@ -125,8 +125,26 @@ module.exports = {
 
   async delete(userId, bioId) {
     try {
+      const biography = new BiographyModel()
+
+      if (await userRepository.findById(userId)) {
+        if (!(await biographyRepository.findById(userId, bioId))) {
+          await biography.addErrors('Operação não autorizada!')
+        }
+      } else {
+        await biography.addErrors(
+          'Operação não autorizada! Usuário não existe!',
+        )
+      }
+
+      const errors = await biography.getErrors()
+
+      if (errors.length > 0) {
+        return biography
+      }
+
       await biographyRepository.delete(userId, bioId)
-      return
+      return biography
     } catch (error) {
       throw new Error(error)
     }

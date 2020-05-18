@@ -14,7 +14,7 @@ class User extends BaseModel {
   }
 
   static associate(models) {
-    this.hasOne(models.Biography, { foreignKey: 'user_id', as: 'biography' })
+    this.hasOne(models.Biography, { foreignKey: 'userId', as: 'biography' })
   }
 
   async validationEmail(email) {

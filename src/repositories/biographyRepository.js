@@ -44,8 +44,8 @@ module.exports = {
 
   async findById(userId, bioId) {
     try {
-      const biography = await biographyModel.findByPk(bioId, {
-        where: { userId },
+      const biography = await biographyModel.findOne({
+        where: { id: bioId, userId },
       })
       return biography
     } catch (error) {

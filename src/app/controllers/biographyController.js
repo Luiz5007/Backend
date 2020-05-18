@@ -13,7 +13,6 @@ module.exports = {
       }
       return res.status(200).json(responseService)
     } catch (error) {
-      console.log(error)
       return res.status(500).json({ error: 'Server Internal Error!' })
     }
   },
@@ -38,10 +37,18 @@ module.exports = {
 
   async delete(req, res) {
     try {
-      await biographyService.delete(req.params.userId, req.params.bioId)
-      return res.status(200).json({ msg: 'Biography Deleted!' })
+      const responseService = await biographyService.delete(
+        req.params.userId,
+        req.params.bioId,
+      )
+      const errors = await responseService.getErrors()
+
+      if (errors.length > 0) {
+        return res.status(400).json(errors)
+      }
+
+      return res.status(204).json()
     } catch (error) {
-      console.log(error)
       return res.status(500).json({ error: 'Server Internal Error! ' })
     }
   },
