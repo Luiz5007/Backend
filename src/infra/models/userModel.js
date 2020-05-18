@@ -13,6 +13,10 @@ class User extends BaseModel {
     )
   }
 
+  static associate(models) {
+    this.hasOne(models.Biography, { foreignKey: 'userId', as: 'biography' })
+  }
+
   async validationEmail(email) {
     const response = email.search('@stefanini.com')
 
@@ -23,11 +27,12 @@ class User extends BaseModel {
     }
 
     const errors = await this.getErrors()
-    if (errors.length === 0) {
-      return true
-    } else {
+
+    if (errors.length > 0) {
       return false
     }
+
+    return true
   }
 
   async validationPassword(password, confirmPassword) {
@@ -42,11 +47,12 @@ class User extends BaseModel {
     }
 
     const errors = await this.getErrors()
-    if (errors.length === 0) {
-      return true
-    } else {
+
+    if (errors.length > 0) {
       return false
     }
+
+    return true
   }
 
   async hashPassword(password) {
