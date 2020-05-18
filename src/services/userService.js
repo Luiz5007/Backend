@@ -1,4 +1,4 @@
-const userRepository = require('../repositories/userRepository@')
+const userRepository = require('../repositories/userRepository')
 const UserModel = require('../infra/models/userModel')
 
 module.exports = {

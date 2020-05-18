@@ -1,5 +1,5 @@
 const biographyRepository = require('../repositories/biographyRepository')
-const userRepository = require('../repositories/UserRepository')
+const userRepository = require('../repositories/userRepository')
 const BiographyModel = require('../infra/models/biographyModel')
 
 module.exports = {
