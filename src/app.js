@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const routes = require('./app/routes/routes')
+const routes = require('./app/routes/index')
 const cors = require('cors')
 
 // filtra quem vai acessar o backend
