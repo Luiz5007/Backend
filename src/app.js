@@ -1,16 +1,22 @@
 const express = require('express')
-const app = express()
-const routes = require('./app/routes/routes')
+const routes = require('./app/routes/index')
 const cors = require('cors')
 
-require('dotenv').config() // variaveis de ambiente
+class App {
+  constructor() {
+    this.server = express()
+    this.middlewares()
+    this.routes()
+  }
 
-// filtra quem vai acessar o backend
-app.use(cors())
+  middlewares() {
+    this.server.use(cors()) // filtra quem vai acessar o backend
+    this.server.use(express.json()) // diz ao server que receberei requisicoes em json
+  }
 
-// diz ao express que receberei requisicoes em json
-app.use(express.json())
+  routes() {
+    this.server.use(routes)
+  }
+}
 
-app.use(routes)
-
-module.exports = app
+module.exports = new App().server
