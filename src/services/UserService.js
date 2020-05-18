@@ -38,13 +38,12 @@ module.exports = {
     try {
       let user = await userRepository.findById(userId)
 
-      if (user) {
-        return user
-      } else {
+      if (!user) {
         user = new UserModel()
         user.addErrors('User not exist!')
-        return user
       }
+
+      return user
     } catch (error) {
       throw new Error(error)
     }
@@ -61,17 +60,15 @@ module.exports = {
 
   async delete(userId) {
     try {
-      let user = await userRepository.findById(userId)
+      const user = new UserModel()
 
-      if (user) {
-        await userRepository.delete(userId)
-        user = new UserModel()
-        return user
-      } else {
-        user = new UserModel()
+      if (!(await userRepository.findById(userId))) {
         await user.addErrors('User not exist!')
         return user
       }
+
+      await userRepository.delete(userId)
+      return user
     } catch (error) {
       throw new Error(error)
     }
@@ -81,43 +78,43 @@ module.exports = {
     try {
       let user = await userRepository.findById(userId)
 
-      if (user) {
-        const data = {}
-
-        if (email) {
-          if (await user.validationEmail(email)) {
-            if (
-              (await userRepository.findByEmail(email)) &&
-              email !== user.email
-            ) {
-              user.addErrors('Email ja existente no sistema!')
-            } else {
-              data.email = email
-            }
-          }
-        }
-
-        if (password && confirmPassword) {
-          if (await user.validationPassword(password, confirmPassword)) {
-            data.password = password
-          }
-        }
-
-        const errors = await user.getErrors()
-
-        if (errors.length > 0) {
-          return user
-        }
-
-        data.password = await user.hashPassword(data.password)
-
-        const responseRepository = await userRepository.update(userId, data)
-        return responseRepository
-      } else {
+      if (!user) {
         user = new UserModel()
         await user.addErrors('User not exist!')
         return user
       }
+
+      const data = {}
+
+      if (email) {
+        if (await user.validationEmail(email)) {
+          if (
+            (await userRepository.findByEmail(email)) &&
+            email !== user.email
+          ) {
+            user.addErrors('Email ja existente no sistema!')
+          } else {
+            data.email = email
+          }
+        }
+      }
+
+      if (password && confirmPassword) {
+        if (await user.validationPassword(password, confirmPassword)) {
+          data.password = password
+        }
+      }
+
+      const errors = await user.getErrors()
+
+      if (errors.length > 0) {
+        return user
+      }
+
+      data.password = await user.hashPassword(data.password)
+
+      const responseRepository = await userRepository.update(userId, data)
+      return responseRepository
     } catch (error) {
       throw new Error(error)
     }
