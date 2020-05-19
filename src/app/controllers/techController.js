@@ -4,7 +4,13 @@ module.exports = {
   async create(req, res) {
     try {
       const responseService = await techService.create(req.body)
-      // verificar errors
+
+      const errors = await responseService.getErrors()
+
+      if (errors.length > 0) {
+        return res.status(400).json(errors)
+      }
+
       return res.status(200).json(responseService)
     } catch (error) {
       return res.status(500).json({ error: 'Server Internal Error! ' })
@@ -27,7 +33,13 @@ module.exports = {
         req.params.techId,
         req.body,
       )
-      // verificar errors
+
+      const errors = await responseService.getErrors()
+
+      if (errors.length > 0) {
+        return res.status(400).json(errors)
+      }
+
       return res.status(200).json(responseService)
     } catch (error) {
       return res.status(500).json({ error: 'Server Internal Error' })
@@ -36,8 +48,13 @@ module.exports = {
 
   async delete(req, res) {
     try {
-      await techService.delete(req.params.techId)
-      // verificar errors
+      const responseService = await techService.delete(req.params.techId)
+
+      const errors = await responseService.getErrors()
+
+      if (errors.length > 0) {
+        return res.status(400).json(errors)
+      }
       return res.status(204).json()
     } catch (error) {
       return res.status(500).json({ error: 'Server Internal Error' })
@@ -47,7 +64,13 @@ module.exports = {
   async findById(req, res) {
     try {
       const responseService = await techService.findById(req.params.techId)
-      // verificar errors
+
+      const errors = await responseService.getErrors()
+
+      if (errors.length > 0) {
+        return res.status(400).json(errors)
+      }
+
       return res.status(200).json(responseService)
     } catch (error) {
       return res.status(500).json({ error: 'Server Internal Error' })

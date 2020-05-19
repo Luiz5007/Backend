@@ -12,7 +12,7 @@ module.exports = {
 
   async index() {
     try {
-      const techlonogies = await techModel.findAll()
+      const techlonogies = await techModel.findAll({ order: [['name', 'ASC']] })
       return techlonogies
     } catch (error) {
       throw new Error(error)
@@ -41,6 +41,15 @@ module.exports = {
   async findById(techId) {
     try {
       const tech = await techModel.findByPk(techId)
+      return tech
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
+
+  async findByName(name) {
+    try {
+      const tech = await techModel.findOne({ where: { name } })
       return tech
     } catch (error) {
       throw new Error(error)

@@ -11,7 +11,7 @@ module.exports = {
       await user.validationPassword(password, confirmPassword)
 
       if (await userRepository.findByEmail(email)) {
-        user.addErrors('Email ja existente no sistema!')
+        await user.addErrors('Email ja existente no sistema!')
       }
 
       const errors = await user.getErrors()

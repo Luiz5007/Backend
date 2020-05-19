@@ -1,10 +1,27 @@
 const techRepository = require('../repositories/techRepository')
+const TechModel = require('../infra/models/techModel')
 
 module.exports = {
-  async create(data) {
+  async create({ name }) {
     try {
-      // verificar se ja existe essa tech cadastrada,
-      // => deixando name em lowCase pra verificar => criar metodo findByName
+      const tech = new TechModel()
+      let nameInPattern = ''
+
+      if (await tech.validationName(name)) {
+        nameInPattern = await tech.putNameInPattern(name)
+        if (await techRepository.findByName(nameInPattern)) {
+          await tech.addErrors('Tech ja cadastrada!')
+        }
+      }
+
+      const errors = await tech.getErrors()
+
+      if (errors.length > 0) {
+        return tech
+      }
+
+      const data = { name: nameInPattern }
+
       const responseRepository = await techRepository.create(data)
       return responseRepository
     } catch (error) {
@@ -21,8 +38,39 @@ module.exports = {
     }
   },
 
-  async update(techId, data) {
+  async update(techId, { name }) {
     try {
+      let tech = await techRepository.findById(techId)
+      let nameInPattern = ''
+      const data = {}
+
+      if (!tech) {
+        tech = new TechModel()
+        await tech.addErrors('Tech não existe!')
+        return tech
+      }
+
+      if (name) {
+        if (await tech.validationName(name)) {
+          nameInPattern = await tech.putNameInPattern(name)
+
+          if (
+            (await techRepository.findByName(nameInPattern)) &&
+            nameInPattern !== tech.name
+          ) {
+            await tech.addErrors('Tech ja cadastrada!')
+          } else {
+            data.name = nameInPattern
+          }
+        }
+      }
+
+      const errors = await tech.getErrors()
+
+      if (errors.length > 0) {
+        return tech
+      }
+
       // verificar se existe essa tech cadastrada
       // verificar nome pra saber se ja nao é de outra tech
 
@@ -35,10 +83,15 @@ module.exports = {
 
   async delete(techId) {
     try {
-      // verificar se existe essa tech cadastrada
-      // retornar model pra verificar errors
+      const tech = new TechModel()
+
+      if (!(await techRepository.findById(techId))) {
+        await tech.addErrors('Tech não existe!')
+        return tech
+      }
+
       await techRepository.delete(techId)
-      return
+      return tech
     } catch (error) {
       throw new Error(error)
     }
@@ -46,8 +99,13 @@ module.exports = {
 
   async findById(techId) {
     try {
-      const tech = await techRepository.findById(techId)
-      // verificar se a tech existe
+      let tech = await techRepository.findById(techId)
+
+      if (!tech) {
+        tech = new TechModel()
+        await tech.addErrors('Tech não existe!')
+      }
+
       return tech
     } catch (error) {
       throw new Error(error)
