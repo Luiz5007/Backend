@@ -8,5 +8,6 @@ router.get('/', async (req, res) => {
 
 router.use(require('./userRoutes'))
 router.use(require('./biographyRoutes'))
+router.use(require('./techRoutes'))
 
 module.exports = router

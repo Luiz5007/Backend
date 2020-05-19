@@ -2,8 +2,9 @@ const Sequelize = require('sequelize')
 const dbConfig = require('../../config/database')
 const user = require('../models/userModel')
 const biography = require('../models/biographyModel')
+const tech = require('../models/techModel')
 
-const models = [user, biography]
+const models = [user, biography, tech]
 
 class DataBase {
   constructor() {
@@ -17,7 +18,9 @@ class DataBase {
   }
 
   associate() {
-    models.map((model) => model.associate(this.connection.models))
+    models.map((model) => {
+      if (model.associate) model.associate(this.connection.models)
+    })
   }
 }
 
