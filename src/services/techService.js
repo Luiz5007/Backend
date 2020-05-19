@@ -71,9 +71,6 @@ module.exports = {
         return tech
       }
 
-      // verificar se existe essa tech cadastrada
-      // verificar nome pra saber se ja nao é de outra tech
-
       const responseRepository = await techRepository.update(techId, data)
       return responseRepository
     } catch (error) {
