@@ -11,6 +11,7 @@ class DataBase {
     this.connection = new Sequelize(dbConfig)
     this.init()
     this.associate()
+    this.sync('force', false) // true = reseta tabela - false = nao reseta
   }
 
   init() {
@@ -20,6 +21,15 @@ class DataBase {
   associate() {
     models.map((model) => {
       if (model.associate) model.associate(this.connection.models)
+    })
+  }
+
+  sync(attr, status) {
+    const opc = {}
+    opc[attr] = status
+
+    models.map((model) => {
+      model.sync(opc)
     })
   }
 }
