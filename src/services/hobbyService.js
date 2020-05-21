@@ -79,4 +79,20 @@ module.exports = {
       throw new Error(error)
     }
   },
+
+  async findById(id) {
+    try {
+      const hobby = new HobbyModel()
+
+      if (!(await hobbyRepository.findById(id))) {
+        await hobby.addErrors('User not exist!')
+        return hobby
+      }
+
+      const responseRepository = await hobbyRepository.findById(id)
+      return responseRepository
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
 }
