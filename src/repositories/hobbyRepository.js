@@ -11,7 +11,7 @@ module.exports = {
   },
   async index() {
     try {
-      const hobbies = await hobbyModel.findAll()
+      const hobbies = await hobbyModel.findAll({ order: [['name', 'ASC']] })
       return hobbies
     } catch (error) {
       throw new Error(error)
