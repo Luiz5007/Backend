@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express()
 const techController = require('../controllers/techController')
-const techUrl = '/techlogies'
+const techUrl = '/technologies'
 
 router.post(techUrl, techController.create)
 router.get(techUrl, techController.index)
