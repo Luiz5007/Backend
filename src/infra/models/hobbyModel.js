@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize')
 const BaseModel = require('./baseModel')
+//const biographyModel = require('./biographyModel')
 
 class Hobby extends BaseModel {
   static init(sequelize) {
@@ -9,6 +10,14 @@ class Hobby extends BaseModel {
       },
       { sequelize, tableName: 'hobbies' },
     )
+  }
+
+  static associate = (models) => {
+    this.belongsToMany(models.Biography, {
+      foreignKey: 'bio_id',
+      through: 'bio_hobby',
+      as: 'biographies',
+    })
   }
 
   async onlyString(name) {
