@@ -7,8 +7,16 @@ class Tech extends BaseModel {
       {
         name: DataTypes.STRING,
       },
-      { sequelize, tableName: 'technologies' },
+      { sequelize, tableName: 'techs' },
     )
+  }
+
+  static associate(models) {
+    this.belongsToMany(models.Biography, {
+      through: 'bio_tech',
+      foreignKey: 'tech_id',
+      as: 'biographies',
+    })
   }
 
   async validationName(name) {

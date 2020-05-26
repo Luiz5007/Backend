@@ -12,8 +12,8 @@ module.exports = {
 
   async index() {
     try {
-      const techlonogies = await techModel.findAll({ order: [['name', 'ASC']] })
-      return techlonogies
+      const techs = await techModel.findAll({ order: [['name', 'ASC']] })
+      return techs
     } catch (error) {
       throw new Error(error)
     }

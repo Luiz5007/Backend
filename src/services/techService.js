@@ -6,6 +6,7 @@ module.exports = {
     try {
       const tech = new TechModel()
       let nameInPattern = ''
+      console.log(tech)
 
       if (await tech.validationName(name)) {
         nameInPattern = await tech.putNameInPattern(name)

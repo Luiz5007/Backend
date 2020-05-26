@@ -3,7 +3,7 @@ const userRepository = require('../repositories/userRepository')
 const BiographyModel = require('../infra/models/biographyModel')
 
 module.exports = {
-  async create(userId, { fullName, nickname, birthday, aboutYou }) {
+  async create(userId, { fullName, nickname, birthday, aboutYou, techs }) {
     try {
       // primeiro validar os dados (identificar usuário existente)
 
@@ -59,8 +59,13 @@ module.exports = {
       }
 
       const responseRepository = await biographyRepository.create(data)
+
+      responseRepository.addTech(techs)
+
       return responseRepository
     } catch (error) {
+      console.log(error)
+
       throw new Error(error)
     }
   },
