@@ -26,7 +26,7 @@ module.exports = {
           model: 'techs',
           key: 'id',
         },
-        onDelete: 'CASCADE',
+        onDelete: 'RESTRICT',
         onUpdate: 'CASCADE',
       },
       created_at: {

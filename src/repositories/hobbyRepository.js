@@ -4,7 +4,9 @@ module.exports = {
   async create({ name }) {
     try {
       const hobbyCreated = await hobbyModel.create({ name: name }) // erro aqui
-      return hobbyCreated
+
+      const hobby = await this.findById(hobbyCreated.id)
+      return hobby
     } catch (error) {
       throw new Error(error)
     }

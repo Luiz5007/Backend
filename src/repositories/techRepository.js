@@ -3,7 +3,9 @@ const techModel = require('../infra/models/techModel')
 module.exports = {
   async create(data) {
     try {
-      const tech = await techModel.create(data)
+      const techCreated = await techModel.create(data)
+
+      const tech = await this.findById(techCreated.id)
       return tech
     } catch (error) {
       throw new Error(error)
