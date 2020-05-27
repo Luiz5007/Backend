@@ -17,13 +17,10 @@ module.exports = {
   async index() {
     try {
       const users = await userModel.findAll({
-        attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
         include: {
           association: 'biography',
-          attributes: { exclude: ['createdAt', 'updatedAt', 'userId'] },
           include: {
             association: 'techs',
-            attributes: { exclude: ['createdAt', 'updatedAt'] },
             through: {
               attributes: [],
             },
@@ -77,13 +74,10 @@ module.exports = {
   async findById(userId) {
     try {
       const user = userModel.findByPk(userId, {
-        attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
         include: {
           association: 'biography',
-          attributes: { exclude: ['createdAt', 'updatedAt', 'userId'] },
           include: {
             association: 'techs',
-            attributes: { exclude: ['createdAt', 'updatedAt'] },
             through: {
               attributes: [],
             },

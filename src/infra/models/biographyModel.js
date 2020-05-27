@@ -21,7 +21,15 @@ class Biography extends BaseModel {
           field: 'user_id',
         },
       },
-      { sequelize, tableName: 'biographies' },
+      {
+        sequelize,
+        tableName: 'biographies',
+        defaultScope: {
+          attributes: {
+            exclude: ['userId'],
+          },
+        },
+      },
     )
   }
 

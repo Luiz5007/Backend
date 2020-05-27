@@ -9,5 +9,10 @@ module.exports = {
   define: {
     timestamps: true,
     underscored: true,
+    defaultScope: {
+      attributes: {
+        exclude: ['createdAt', 'updatedAt'],
+      },
+    },
   },
 }

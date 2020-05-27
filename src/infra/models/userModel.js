@@ -12,6 +12,11 @@ class User extends BaseModel {
       {
         sequelize,
         tableName: 'users',
+        defaultScope: {
+          attributes: {
+            exclude: ['password'],
+          },
+        },
       },
     )
   }

@@ -3,11 +3,16 @@ const biographyModel = require('../infra/models/biographyModel')
 module.exports = {
   async create(data) {
     try {
-      const biography = await biographyModel.create(data)
+      const biographyCreated = await biographyModel.create(data)
 
       if (data.techs) {
-        biography.setTechs(data.techs)
+        biographyCreated.setTechs(data.techs)
       }
+
+      const biography = await this.findById(
+        biographyCreated.userId,
+        biographyCreated.id,
+      )
 
       return biography
     } catch (error) {
