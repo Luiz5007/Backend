@@ -12,17 +12,22 @@ module.exports = {
 
       bio_id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: { model: 'biographies', key: 'id' },
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
-        allowNull: false,
       },
 
       hobby_id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: { model: 'hobbies', key: 'id' },
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
+      },
+
+      descr: {
+        type: Sequelize.STRING,
         allowNull: false,
       },
 
