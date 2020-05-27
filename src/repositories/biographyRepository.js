@@ -4,6 +4,11 @@ module.exports = {
   async create(data) {
     try {
       const biography = await biographyModel.create(data)
+
+      if (data.techs) {
+        biography.setTechs(data.techs)
+      }
+
       return biography
     } catch (error) {
       throw new Error(error)
@@ -17,6 +22,11 @@ module.exports = {
       })
 
       const biography = await this.findById(userId, bioId)
+
+      if (data.techs) {
+        biography.setTechs(data.techs)
+      }
+
       return biography
     } catch (error) {
       throw new Error(error)

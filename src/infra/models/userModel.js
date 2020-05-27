@@ -9,7 +9,10 @@ class User extends BaseModel {
         email: DataTypes.STRING,
         password: DataTypes.STRING,
       },
-      { sequelize, tableName: 'users' },
+      {
+        sequelize,
+        tableName: 'users',
+      },
     )
   }
 

@@ -17,8 +17,18 @@ module.exports = {
   async index() {
     try {
       const users = await userModel.findAll({
-        attributes: { exclude: ['password'] },
-        include: { association: 'biography' },
+        attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+        include: {
+          association: 'biography',
+          attributes: { exclude: ['createdAt', 'updatedAt', 'userId'] },
+          include: {
+            association: 'techs',
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
+            through: {
+              attributes: [],
+            },
+          },
+        },
       })
       return users
     } catch (error) {
@@ -67,10 +77,18 @@ module.exports = {
   async findById(userId) {
     try {
       const user = userModel.findByPk(userId, {
-        attributes: {
-          exclude: 'password',
+        attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+        include: {
+          association: 'biography',
+          attributes: { exclude: ['createdAt', 'updatedAt', 'userId'] },
+          include: {
+            association: 'techs',
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
+            through: {
+              attributes: [],
+            },
+          },
         },
-        include: { association: 'biography' },
       })
 
       return user

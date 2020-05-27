@@ -52,6 +52,14 @@ module.exports = {
         }
       }
 
+      if (techs) {
+        if (Array.isArray(techs)) {
+          data.techs = techs
+        } else {
+          biography.addErrors('Techs Inválidas!')
+        }
+      }
+
       const errors = await biography.getErrors()
 
       if (errors.length > 0) {
@@ -59,8 +67,6 @@ module.exports = {
       }
 
       const responseRepository = await biographyRepository.create(data)
-
-      responseRepository.addTech(techs)
 
       return responseRepository
     } catch (error) {
@@ -70,7 +76,11 @@ module.exports = {
     }
   },
 
-  async update({ fullName, nickname, birthday, aboutYou }, bioId, userId) {
+  async update(
+    { fullName, nickname, birthday, aboutYou, techs },
+    bioId,
+    userId,
+  ) {
     try {
       const biography = new BiographyModel()
 
@@ -107,6 +117,14 @@ module.exports = {
       if (aboutYou) {
         if (await biography.validationAboutYou(aboutYou)) {
           data.aboutYou = aboutYou
+        }
+      }
+
+      if (techs) {
+        if (Array.isArray(techs)) {
+          data.techs = techs
+        } else {
+          biography.addErrors('Techs Inválidas!')
         }
       }
 
