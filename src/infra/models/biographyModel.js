@@ -28,6 +28,7 @@ class Biography extends BaseModel {
 
   static associate(models) {
     this.belongsTo(models.User, { foreignKey: 'userId', as: 'user' })
+    this.belongsToMany(models.Hobby, { through: models.BioHobby })
   }
 
   async validationFullName(fullName) {
