@@ -11,14 +11,6 @@ class Hobby extends BaseModel {
     )
   }
 
-  static associate(models) {
-    this.belongsToMany(models.Biography, {
-      foreignKey: 'bioId',
-      through: 'bio_hobby',
-      as: 'biographies',
-    })
-  }
-
   async onlyString(name) {
     const data = {}
     data.name = name.search(/[0-9]/)

@@ -1,11 +1,9 @@
 const biographyModel = require('../infra/models/biographyModel')
-const hobbiesModel = require('../infra/models/hobbiesModel')
 
 module.exports = {
-  async create({ hobbies, ...data }) {
+  async create(data) {
     try {
       const biography = await biographyModel.create(data)
-      await biography.addHobbies(hobbies, { through: hobbiesModel.hobbyId })
       return biography
     } catch (error) {
       throw new Error(error)

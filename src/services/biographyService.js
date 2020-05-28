@@ -1,15 +1,13 @@
 const biographyRepository = require('../repositories/biographyRepository')
 const userRepository = require('../repositories/userRepository')
 const BiographyModel = require('../infra/models/biographyModel')
-const HobbiesModel = require('../infra/models/hobbiesModel')
 
 module.exports = {
-  async create(userId, { fullName, nickname, birthday, aboutYou, hobbies }) {
+  async create(userId, { fullName, nickname, birthday, aboutYou }) {
     try {
       // primeiro validar os dados (identificar usuário existente)
 
       const biography = new BiographyModel()
-      const hobby = new HobbiesModel()
 
       if (await userRepository.findById(userId)) {
         if (await biographyRepository.findByUserId(userId)) {
@@ -53,7 +51,7 @@ module.exports = {
           data.aboutYou = aboutYou
         }
       }
-      data.hobbies = await hobby.parseHobbies(hobbies)
+
       const errors = await biography.getErrors()
 
       if (errors.length > 0) {

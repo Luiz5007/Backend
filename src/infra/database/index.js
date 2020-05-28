@@ -4,9 +4,8 @@ const user = require('../models/userModel')
 const biography = require('../models/biographyModel')
 const hobby = require('../models/hobbyModel')
 const tech = require('../models/techModel')
-const hobbies = require('../models/hobbiesModel')
 
-const models = [user, biography, hobby, tech, hobbies]
+const models = [user, biography, hobby, tech]
 
 class DataBase {
   constructor() {
