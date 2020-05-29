@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize')
 const BaseModel = require('./baseModel')
-// const hobbyModel = require('./hobbyModel')
+
 const moment = require('moment')
 
 class Biography extends BaseModel {
@@ -28,7 +28,10 @@ class Biography extends BaseModel {
 
   static associate(models) {
     this.belongsTo(models.User, { foreignKey: 'userId', as: 'user' })
-    this.belongsToMany(models.Hobby, { through: models.BioHobby })
+    this.belongsToMany(models.Hobby, {
+      through: 'biographyhobby',
+      foreignKey: 'biographyId',
+    })
   }
 
   async validationFullName(fullName) {

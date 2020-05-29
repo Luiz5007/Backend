@@ -1,9 +1,10 @@
 const biographyRepository = require('../repositories/biographyRepository')
 const userRepository = require('../repositories/userRepository')
+const bioHobbyService = require('../services/bioHobbyService')
 const BiographyModel = require('../infra/models/biographyModel')
 
 module.exports = {
-  async create(userId, { fullName, nickname, birthday, aboutYou }) {
+  async create(userId, { fullName, nickname, birthday, aboutYou, hobbies }) {
     try {
       // primeiro validar os dados (identificar usuário existente)
 
@@ -59,6 +60,8 @@ module.exports = {
       }
 
       const responseRepository = await biographyRepository.create(data)
+      const bioId = responseRepository.id
+      await bioHobbyService.create(bioId, hobbies)
       return responseRepository
     } catch (error) {
       throw new Error(error)

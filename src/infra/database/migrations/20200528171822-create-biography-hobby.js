@@ -1,50 +1,41 @@
 'use strict'
-
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('bio_hobby', {
+    return queryInterface.createTable('biographyhobby', {
       id: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
+        allowNull: false,
         autoIncrement: true,
-        allowNull: false,
-      },
-      bio_id: {
+        primaryKey: true,
         type: Sequelize.INTEGER,
-        allowNull: false,
+      },
+      biography_id: {
+        type: Sequelize.INTEGER,
         references: {
           model: 'biographies',
           key: 'id',
         },
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
       },
       hobby_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
         references: {
           model: 'hobbies',
           key: 'id',
         },
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
       },
       descr: {
         type: Sequelize.STRING,
-        allowNull: true,
       },
       created_at: {
-        type: Sequelize.DATE,
         allowNull: false,
+        type: Sequelize.DATE,
       },
       updated_at: {
-        type: Sequelize.DATE,
         allowNull: false,
+        type: Sequelize.DATE,
       },
     })
   },
-
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('bio_hobby')
+    return queryInterface.dropTable('biographyhobby')
   },
 }
