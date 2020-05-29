@@ -122,6 +122,7 @@ module.exports = {
 
       if (techs) {
         if (Array.isArray(techs)) {
+          // verificar se realmente existem essas techs no db?
           data.techs = techs
         } else {
           biography.addErrors('Techs Inválidas!')
