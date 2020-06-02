@@ -1,4 +1,5 @@
 const biographyModel = require('../infra/models/biographyModel')
+const Hobby = require('../infra/models/hobbyModel')
 
 module.exports = {
   async create(data) {
@@ -46,6 +47,12 @@ module.exports = {
     try {
       const biography = await biographyModel.findOne({
         where: { id: bioId, userId },
+        include: {
+          association: 'hobbies',
+          attributes: {
+            exclude: ['id', 'biographyId', 'createdAt', 'updatedAt'],
+          },
+        },
       })
       return biography
     } catch (error) {

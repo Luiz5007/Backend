@@ -2,6 +2,7 @@ const biographyRepository = require('../repositories/biographyRepository')
 const userRepository = require('../repositories/userRepository')
 const bioHobbyService = require('../services/bioHobbyService')
 const BiographyModel = require('../infra/models/biographyModel')
+const BiographyHobbyModel = require('../infra/models/biographyHobbyModel')
 
 module.exports = {
   async create(userId, { fullName, nickname, birthday, aboutYou, hobbies }) {
@@ -9,7 +10,7 @@ module.exports = {
       // primeiro validar os dados (identificar usuário existente)
 
       const biography = new BiographyModel()
-
+      const bioHobby = new BiographyHobbyModel()
       if (await userRepository.findById(userId)) {
         if (await biographyRepository.findByUserId(userId)) {
           await biography.addErrors(
@@ -53,16 +54,23 @@ module.exports = {
         }
       }
 
-      const errors = await biography.getErrors()
+      if (hobbies) {
+        if (await bioHobby.validationHobbies(hobbies)) {
+          data.hobbies = hobbies
+        }
+      }
+      await biography.addErrors(await bioHobby.getErrors())
+      const errorsBiography = await biography.getErrors()
 
-      if (errors.length > 0) {
+      if (errorsBiography.length > 0) {
         return biography
       }
 
       const responseRepository = await biographyRepository.create(data)
       const bioId = responseRepository.id
       await bioHobbyService.create(bioId, hobbies)
-      return responseRepository
+      const bioPlusHobby = await biographyRepository.findById(userId, bioId)
+      return bioPlusHobby
     } catch (error) {
       throw new Error(error)
     }

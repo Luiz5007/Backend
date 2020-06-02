@@ -14,8 +14,12 @@ class BaseModel extends Model {
     return this.errors
   }
 
-  async addErrors(err) {
-    this.errors.push(err)
+  async addErrors(errs) {
+    if (Array.isArray(errs)) {
+      errs.map((err) => this.errors.push(err))
+    } else {
+      this.errors.push(errs)
+    }
   }
 }
 

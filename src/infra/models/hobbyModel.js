@@ -11,12 +11,7 @@ class Hobby extends BaseModel {
     )
   }
 
-  static associate(models) {
-    this.belongsToMany(models.Biography, {
-      through: 'biographyhobby',
-      foreignKey: 'hobbyId',
-    })
-  }
+  static associate(models) {}
 
   async onlyString(name) {
     const data = {}

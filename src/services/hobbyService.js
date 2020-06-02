@@ -85,10 +85,13 @@ module.exports = {
       const hobby = new HobbyModel()
 
       if (!(await hobbyRepository.findById(id))) {
-        await hobby.addErrors('User not exist!')
-        return hobby
+        await hobby.addErrors('Hobby não existe!')
       }
 
+      const errors = await hobby.getErrors()
+      if (errors.length > 0) {
+        return hobby
+      }
       const responseRepository = await hobbyRepository.findById(id)
       return responseRepository
     } catch (error) {

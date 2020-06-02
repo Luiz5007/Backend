@@ -18,7 +18,10 @@ module.exports = {
     try {
       const users = await userModel.findAll({
         attributes: { exclude: ['password'] },
-        include: { association: 'biography' },
+        include: {
+          association: 'biography',
+          include: { association: 'hobbies' },
+        },
       })
       return users
     } catch (error) {
