@@ -69,6 +69,7 @@ module.exports = {
 
       const responseRepository = await biographyRepository.create(data)
       const bioId = responseRepository.id
+
       await bioHobbyService.create(bioId, hobbies)
       const bioPlusHobby = await biographyRepository.findById(userId, bioId)
       return bioPlusHobby

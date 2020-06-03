@@ -23,30 +23,42 @@ class BiographyHobby extends BaseModel {
   }
 
   async validationHobbies(hobbies) {
-    const [unstructured] = hobbies
-    if (unstructured.id <= 0) {
-      await this.addErrors(' Valor Inválido! Hobby Não existe!')
-    }
-    // verificar se um hobby existe com o id passado
-    const find = await hobbyService.findById(unstructured.id)
-    // se não tiver nenhum hobby com o id passado
-    if (find.errors.length > 0) {
-      await this.addErrors(find.errors)
-      return BiographyHobby
-    }
-    // validar a descrição
-    if (unstructured.descr) {
-      if (unstructured.descr.length < 30) {
-        await this.addErrors('Descrição muito curta! Ao mínimo 30 caracteres')
+    var i = 0
+    var unstructured = []
+    var hobbyId = []
+    for (i in hobbies) {
+      unstructured[i] = hobbies[i]
+
+      if (unstructured[i].id <= 0) {
+        await this.addErrors(
+          'Id #(' + unstructured[i].id + ') Inválido! Hobby Não existe!',
+        )
+        return null
       }
-      if (unstructured.descr.length > 255) {
-        await this.addErrors('Descrição muito longa! No máximo 255 caracteres')
+
+      const find = await hobbyService
+        .findById(unstructured[i].id)
+        .catch((error) => {
+          console.log(error)
+        })
+
+      if (find && find.errors.length > 0) {
+        await this.addErrors(find.errors)
+        return BiographyHobby
       }
-      return unstructured
-    } else {
-      const [hobbyId] = unstructured.id
-      return hobbyId
+
+      // validar a descrição
+      if (unstructured[i].descr) {
+        if (unstructured[i].descr.length > 255) {
+          await this.addErrors(
+            'Descrição muito longa! No máximo 255 caracteres',
+          )
+        }
+      } else {
+        hobbyId[i] = unstructured[i].id
+      }
     }
+    return unstructured
   }
 }
 

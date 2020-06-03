@@ -5,6 +5,8 @@ module.exports = {
     try {
       const bioHobby = await bioHobbyModel.create(bioHobbyDescr)
       return bioHobby
-    } catch (error) { }
+    } catch (error) {
+      throw new Error(error)
+    }
   },
 }

@@ -3,16 +3,20 @@ const bioHobbyRepository = require('../repositories/bioHobbyRepository')
 module.exports = {
   async create(bioId, hobbies) {
     try {
-      const biographyId = bioId
-      const [unstructured] = hobbies
+      var i = 0
+      var unstructured = []
+      var responseRepository
+      for (i in hobbies) {
+        const biographyId = bioId
+        unstructured[i] = hobbies[i]
 
-      const hobbyId = unstructured.id
-      const descr = unstructured.descr
+        var hobbyId = unstructured[i].id
+        var descr = unstructured[i].descr
 
-      const bioHobbyDescr = { biographyId, hobbyId, descr }
+        var bioHobbyDescr = { biographyId, hobbyId, descr }
 
-      const responseRepository = await bioHobbyRepository.create(bioHobbyDescr)
-
+        responseRepository = await bioHobbyRepository.create(bioHobbyDescr)
+      }
       return responseRepository
     } catch (error) {
       throw new Error(error)
