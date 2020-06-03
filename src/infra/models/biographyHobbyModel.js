@@ -1,6 +1,5 @@
 const { DataTypes } = require('sequelize')
 const BaseModel = require('./baseModel')
-const HobbyModel = require('../models/hobbyModel')
 const hobbyService = require('../../services/hobbyService')
 
 class BiographyHobby extends BaseModel {
@@ -24,20 +23,30 @@ class BiographyHobby extends BaseModel {
   }
 
   async validationHobbies(hobbies) {
-    const hobby = new HobbyModel()
     const [unstructured] = hobbies
     if (unstructured.id <= 0) {
       await this.addErrors(' Valor Inválido! Hobby Não existe!')
     }
-    await hobbyService.findById(unstructured.id)
-
-    console.log(await hobby.getErrors())
-    const errors = [1, 2]
-    if (errors.length > 0) {
-      await this.addErrors('Hobby não Existe!')
+    // verificar se um hobby existe com o id passado
+    const find = await hobbyService.findById(unstructured.id)
+    // se não tiver nenhum hobby com o id passado
+    if (find.errors.length > 0) {
+      await this.addErrors(find.errors)
+      return BiographyHobby
     }
-
-    return null
+    // validar a descrição
+    if (unstructured.descr) {
+      if (unstructured.descr.length < 30) {
+        await this.addErrors('Descrição muito curta! Ao mínimo 30 caracteres')
+      }
+      if (unstructured.descr.length > 255) {
+        await this.addErrors('Descrição muito longa! No máximo 255 caracteres')
+      }
+      return unstructured
+    } else {
+      const [hobbyId] = unstructured.id
+      return hobbyId
+    }
   }
 }
 

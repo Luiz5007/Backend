@@ -1,5 +1,4 @@
 const biographyModel = require('../infra/models/biographyModel')
-const Hobby = require('../infra/models/hobbyModel')
 
 module.exports = {
   async create(data) {

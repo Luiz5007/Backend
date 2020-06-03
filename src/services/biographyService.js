@@ -11,6 +11,7 @@ module.exports = {
 
       const biography = new BiographyModel()
       const bioHobby = new BiographyHobbyModel()
+
       if (await userRepository.findById(userId)) {
         if (await biographyRepository.findByUserId(userId)) {
           await biography.addErrors(
