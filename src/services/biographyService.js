@@ -1,6 +1,7 @@
 const biographyRepository = require('../repositories/biographyRepository')
 const userRepository = require('../repositories/userRepository')
 const BiographyModel = require('../infra/models/biographyModel')
+const techRepository = require('../repositories/techRepository')
 
 module.exports = {
   async create(userId, { fullName, nickname, birthday, aboutYou, techs }) {
@@ -54,13 +55,28 @@ module.exports = {
 
       if (techs) {
         if (Array.isArray(techs)) {
+          techs.map(async (tech) => {
+            console.log(tech)
+
+            if (tech <= 0) {
+              await biography.addErrors(`Id ${tech} da tech inválido!`)
+            } else {
+              const techFinded = await techRepository.findById(tech)
+              console.log(techFinded)
+
+              if (!techFinded) {
+                await biography.addErrors(`Tech de id ${tech} não existe!`)
+              }
+            }
+          })
           data.techs = techs
         } else {
-          biography.addErrors('Techs Inválidas!')
+          await biography.addErrors('Techs Inválidas!')
         }
       }
 
       const errors = await biography.getErrors()
+      console.log(errors)
 
       if (errors.length > 0) {
         return biography
