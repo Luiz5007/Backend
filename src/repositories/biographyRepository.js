@@ -6,7 +6,7 @@ module.exports = {
       const biographyCreated = await biographyModel.create(data)
 
       if (data.techs) {
-        biographyCreated.setTechs(data.techs)
+        await biographyCreated.setTechs(data.techs)
       }
 
       const biography = await this.findById(
@@ -29,7 +29,7 @@ module.exports = {
       const biography = await this.findById(userId, bioId)
 
       if (data.techs) {
-        biography.setTechs(data.techs)
+        await biography.setTechs(data.techs)
       }
 
       return biography
@@ -50,7 +50,15 @@ module.exports = {
 
   async findByUserId(userId) {
     try {
-      const biography = await biographyModel.findOne({ where: { userId } })
+      const biography = await biographyModel.findOne({
+        where: { userId },
+        include: {
+          association: 'techs',
+          through: {
+            attributes: [],
+          },
+        },
+      })
       return biography
     } catch (error) {
       throw new Error(error)
@@ -61,6 +69,12 @@ module.exports = {
     try {
       const biography = await biographyModel.findOne({
         where: { id: bioId, userId },
+        include: {
+          association: 'techs',
+          through: {
+            attributes: [],
+          },
+        },
       })
       return biography
     } catch (error) {
