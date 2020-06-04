@@ -23,8 +23,8 @@ module.exports = {
           model: 'hobbies',
           key: 'id',
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+        onUpdate: 'RESTRICT',
+        onDelete: 'RESTRICT',
       },
       descr: {
         type: Sequelize.STRING,

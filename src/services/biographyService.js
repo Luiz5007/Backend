@@ -79,7 +79,11 @@ module.exports = {
     }
   },
 
-  async update({ fullName, nickname, birthday, aboutYou }, bioId, userId) {
+  async update(
+    { fullName, nickname, birthday, aboutYou, hobbies },
+    bioId,
+    userId,
+  ) {
     try {
       const biography = new BiographyModel()
 
