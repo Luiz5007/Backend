@@ -168,7 +168,7 @@ module.exports = {
               data.techs = techs
             }
           } else {
-            data.techs = techs
+            data.techs = []
           }
         } else {
           await biography.addErrors('Techs Inválidas!')
