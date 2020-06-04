@@ -6,7 +6,6 @@ module.exports = {
     try {
       const tech = new TechModel()
       let nameInPattern = ''
-      console.log(tech)
 
       if (await tech.validationName(name)) {
         nameInPattern = await tech.putNameInPattern(name)
@@ -101,7 +100,7 @@ module.exports = {
 
       if (!tech) {
         tech = new TechModel()
-        await tech.addErrors('Tech não existe!')
+        await tech.addErrors(`Tech de id ${techId} não existe!`)
       }
 
       return tech

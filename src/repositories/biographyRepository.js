@@ -26,12 +26,13 @@ module.exports = {
         where: { id: bioId, userId },
       })
 
-      const biography = await this.findById(userId, bioId)
+      const biographyUpdated = await this.findById(userId, bioId)
 
       if (data.techs) {
-        await biography.setTechs(data.techs)
+        await biographyUpdated.setTechs(data.techs)
       }
 
+      const biography = await this.findById(userId, bioId)
       return biography
     } catch (error) {
       throw new Error(error)
