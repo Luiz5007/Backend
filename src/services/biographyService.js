@@ -71,6 +71,7 @@ module.exports = {
       const bioId = responseRepository.id
 
       await bioHobbyService.create(bioId, hobbies)
+
       const bioPlusHobby = await biographyRepository.findById(userId, bioId)
       return bioPlusHobby
     } catch (error) {

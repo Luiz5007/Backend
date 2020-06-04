@@ -20,7 +20,13 @@ module.exports = {
         attributes: { exclude: ['password'] },
         include: {
           association: 'biography',
-          include: { association: 'hobbies' },
+          attributes: { exclude: ['createdAt', 'updatedAt'] },
+          include: {
+            association: 'hobbies',
+            attributes: {
+              exclude: ['id', 'biographyId', 'createdAt', 'updatedAt'],
+            },
+          },
         },
       })
       return users
@@ -73,7 +79,10 @@ module.exports = {
         attributes: {
           exclude: 'password',
         },
-        include: { association: 'biography' },
+        include: {
+          association: 'biography',
+          include: { association: 'hobbies' },
+        },
       })
 
       return user

@@ -6,6 +6,7 @@ module.exports = {
       var i = 0
       var unstructured = []
       var responseRepository
+
       for (i in hobbies) {
         const biographyId = bioId
         unstructured[i] = hobbies[i]
