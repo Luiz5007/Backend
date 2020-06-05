@@ -1,7 +1,8 @@
 const biographyRepository = require('../repositories/biographyRepository')
 const userRepository = require('../repositories/userRepository')
 const BiographyModel = require('../infra/models/biographyModel')
-const techService = require('./techService')
+const TechModel = require('../infra/models/techModel')
+const techRepository = require('../repositories/techRepository')
 
 module.exports = {
   async create(userId, { fullName, nickname, birthday, aboutYou, techs }) {
@@ -56,25 +57,24 @@ module.exports = {
       if (techs) {
         if (Array.isArray(techs)) {
           if (techs.length > 0) {
-            const techsErrors = []
-
+            const tech = new TechModel()
             for (const i in techs) {
               const techId = techs[i]
 
               if (techId <= 0) {
-                await biography.addErrors(`Tech de id ${techId} é inválida`)
+                await tech.addErrors(`Tech de id ${techId} é inválida`)
               } else {
-                const tech = await techService.findById(techId)
-                const techErrors = await tech.getErrors()
+                const techFinded = await techRepository.findById(techId)
 
-                if (techErrors.length > 0) {
-                  techErrors.map((err) => techsErrors.push(err))
+                if (!techFinded) {
+                  await tech.addErrors(`Tech de id ${techId} não existe`)
                 }
               }
             }
 
-            if (techsErrors.length > 0) {
-              await biography.addErrors(techsErrors)
+            const techErrors = await tech.getErrors()
+            if (techErrors.length > 0) {
+              await biography.addErrors(techErrors)
             } else {
               data.techs = techs
             }
@@ -145,30 +145,27 @@ module.exports = {
       if (techs) {
         if (Array.isArray(techs)) {
           if (techs.length > 0) {
-            const techsErrors = []
-
+            const tech = new TechModel()
             for (const i in techs) {
               const techId = techs[i]
 
               if (techId <= 0) {
-                await biography.addErrors(`Tech de id ${techId} é inválida`)
+                await tech.addErrors(`Tech de id ${techId} é inválida`)
               } else {
-                const tech = await techService.findById(techId)
-                const techErrors = await tech.getErrors()
+                const techFinded = await techRepository.findById(techId)
 
-                if (techErrors.length > 0) {
-                  techErrors.map((err) => techsErrors.push(err))
+                if (!techFinded) {
+                  await tech.addErrors(`Tech de id ${techId} não existe`)
                 }
               }
             }
 
-            if (techsErrors.length > 0) {
-              await biography.addErrors(techsErrors)
+            const techErrors = await tech.getErrors()
+            if (techErrors.length > 0) {
+              await biography.addErrors(techErrors)
             } else {
               data.techs = techs
             }
-          } else {
-            data.techs = []
           }
         } else {
           await biography.addErrors('Techs Inválidas!')

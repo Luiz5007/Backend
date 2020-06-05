@@ -42,8 +42,6 @@ module.exports = {
 
   async findById(techId) {
     try {
-      console.log('asdasdasdasd')
-
       const tech = await techModel.findByPk(techId)
       return tech
     } catch (error) {
