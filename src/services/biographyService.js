@@ -58,9 +58,7 @@ module.exports = {
         if (Array.isArray(techs)) {
           if (techs.length > 0) {
             const tech = new TechModel()
-            for (const i in techs) {
-              const techId = techs[i]
-
+            for (const techId of techs) {
               if (techId <= 0) {
                 await tech.addErrors(`Tech de id ${techId} é inválida`)
               } else {
@@ -146,9 +144,7 @@ module.exports = {
         if (Array.isArray(techs)) {
           if (techs.length > 0) {
             const tech = new TechModel()
-            for (const i in techs) {
-              const techId = techs[i]
-
+            for (const techId of techs) {
               if (techId <= 0) {
                 await tech.addErrors(`Tech de id ${techId} é inválida`)
               } else {
