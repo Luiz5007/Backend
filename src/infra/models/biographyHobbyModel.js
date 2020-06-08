@@ -10,13 +10,13 @@ class BiographyHobby extends BaseModel {
         hobbyId: DataTypes.INTEGER,
         descr: DataTypes.STRING,
       },
-      { sequelize, tableName: 'biography_hobby' },
+      { sequelize, tableName: 'bio_hobby' },
     )
   }
 
   static associate(models) {
     this.belongsToMany(models.Biography, {
-      through: 'biography_hobby',
+      through: 'bio_hobby',
       foreignKey: 'id',
       as: 'biographies',
     })
@@ -25,7 +25,7 @@ class BiographyHobby extends BaseModel {
   async validationHobbies(hobbies) {
     var i = 0
     var unstructured = []
-    var hobbyId = []
+
     for (i in hobbies) {
       unstructured[i] = hobbies[i]
 
@@ -55,7 +55,7 @@ class BiographyHobby extends BaseModel {
           )
         }
       } else {
-        hobbyId[i] = unstructured[i].id
+        unstructured[i].id = hobbies[i].id
       }
     }
     return unstructured

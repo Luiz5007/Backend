@@ -12,6 +12,7 @@ module.exports = {
       const biography = new BiographyModel()
       const bioHobby = new BiographyHobbyModel()
 
+      // verificar duplicidades - não podem existir mais de uma biografia com o mesmo user_id
       if (await userRepository.findById(userId)) {
         if (await biographyRepository.findByUserId(userId)) {
           await biography.addErrors(
@@ -23,10 +24,9 @@ module.exports = {
         await biography.addErrors('Este usuário não existe!')
         return biography
       }
-      // verificar duplicidades - não podem existir mais de uma biografia com o mesmo user_id
 
       const data = { userId }
-
+      // Se o body contém nome completo, validar nome completo
       if (fullName) {
         if (await biography.validationFullName(fullName)) {
           data.fullName = fullName
@@ -36,7 +36,7 @@ module.exports = {
           'Preencha seu Nome Completo. Campo Obrigatório!',
         )
       }
-
+      // Se o body contém apelido, validar apelido
       if (nickname) {
         if (await biography.validationNickname(nickname)) {
           data.nickname = nickname
@@ -54,24 +54,27 @@ module.exports = {
           data.aboutYou = aboutYou
         }
       }
-
+      // Se o body contém hobbies, validar hobbies
       if (hobbies) {
         if (await bioHobby.validationHobbies(hobbies)) {
           data.hobbies = hobbies
         }
       }
+      // adicionar os erros de BioHobbyModel
       await biography.addErrors(await bioHobby.getErrors())
-      const errorsBiography = await biography.getErrors()
-
-      if (errorsBiography.length > 0) {
+      // pegar os erros da BiographyModel
+      const errors = await biography.getErrors()
+      // se houver errros, retornar Model
+      if (errors.length > 0) {
         return biography
       }
-
+      // Após validado todos os campos do body, criar biography
       const responseRepository = await biographyRepository.create(data)
+      // obter id da biography criada
       const bioId = responseRepository.id
-
+      // criar hobbies com id desta biography
       await bioHobbyService.create(bioId, hobbies)
-
+      // encontrar biography + hobbies do userId
       const bioPlusHobby = await biographyRepository.findById(userId, bioId)
       return bioPlusHobby
     } catch (error) {
@@ -86,7 +89,8 @@ module.exports = {
   ) {
     try {
       const biography = new BiographyModel()
-
+      const bioHobby = new BiographyHobbyModel()
+      // userId e bioId devem ser iguais aos relacionados no DB
       if (await userRepository.findById(userId)) {
         if (!(await biographyRepository.findById(userId, bioId))) {
           await biography.addErrors('Operação não autorizada!')
@@ -96,9 +100,9 @@ module.exports = {
           'Operação não autorizada! Usuário não existe!',
         )
       }
-
+      // Se userId e bioId corretos, criar objeto dinâmico
       const data = {}
-
+      // Se o body contém nome completo, validar nome completo
       if (fullName) {
         if (await biography.validationFullName(fullName)) {
           data.fullName = fullName
@@ -122,20 +126,27 @@ module.exports = {
           data.aboutYou = aboutYou
         }
       }
-
+      // Se o body contém hobbies, validar os hobbies
+      if (hobbies) {
+        if (await bioHobby.validationHobbies(hobbies)) {
+          data.hobbies = hobbies
+        }
+      }
+      // adicionar os erros da BioHobbyModel
+      await biography.addErrors(await bioHobby.getErrors())
+      // pegar os erros da BiographyModel
       const errors = await biography.getErrors()
-
+      // se ouver erros, retornar Model
       if (errors.length > 0) {
         return biography
       }
-
-      const responseRepository = await biographyRepository.update(
-        data,
-        bioId,
-        userId,
-      )
-
-      return responseRepository
+      // atualizar biography
+      await biographyRepository.update(data, bioId, userId)
+      // atualizar hobbies
+      await bioHobbyService.update(bioId, hobbies)
+      // encontrar biography + hobbies do userId
+      const bioPlusHobby = await biographyRepository.findById(userId, bioId)
+      return bioPlusHobby
     } catch (error) {
       throw new Error(error)
     }
