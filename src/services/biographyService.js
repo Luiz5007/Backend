@@ -7,8 +7,6 @@ const techRepository = require('../repositories/techRepository')
 module.exports = {
   async create(userId, { fullName, nickname, birthday, aboutYou, techs }) {
     try {
-      // primeiro validar os dados (identificar usuário existente)
-
       const biography = new BiographyModel()
 
       if (await userRepository.findById(userId)) {
@@ -22,7 +20,6 @@ module.exports = {
         await biography.addErrors('Este usuário não existe!')
         return biography
       }
-      // verificar duplicidades - não podem existir mais de uma biografia com o mesmo user_id
 
       const data = { userId }
 
@@ -162,6 +159,8 @@ module.exports = {
             } else {
               data.techs = techs
             }
+          } else {
+            data.techs = []
           }
         } else {
           await biography.addErrors('Techs Inválidas!')
