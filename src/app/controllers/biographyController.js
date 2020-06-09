@@ -4,7 +4,7 @@ module.exports = {
   async create(req, res) {
     try {
       const responseService = await biographyService.create(
-        req.params.userId,
+        Number(req.params.userId),
         req.body,
       )
       const errors = await responseService.getErrors()
@@ -21,8 +21,8 @@ module.exports = {
     try {
       const responseService = await biographyService.update(
         req.body,
-        req.params.bioId,
-        req.params.userId,
+        Number(req.params.bioId),
+        Number(req.params.userId),
       )
       const errors = await responseService.getErrors()
 
@@ -38,8 +38,8 @@ module.exports = {
   async delete(req, res) {
     try {
       const responseService = await biographyService.delete(
-        req.params.userId,
-        req.params.bioId,
+        Number(req.params.bioId),
+        Number(req.params.userId),
       )
       const errors = await responseService.getErrors()
 

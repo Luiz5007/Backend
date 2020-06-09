@@ -8,16 +8,15 @@ module.exports = {
   async create(userId, { fullName, nickname, birthday, aboutYou, techs }) {
     try {
       const biography = new BiographyModel()
+      const user = await userRepository.findById(userId)
 
-      if (await userRepository.findById(userId)) {
-        if (await biographyRepository.findByUserId(userId)) {
-          await biography.addErrors(
-            'Este usuário já tem uma Biografia cadastrada!',
-          )
-          return biography
-        }
-      } else {
-        await biography.addErrors('Este usuário não existe!')
+      if (!user) {
+        await biography.addErrors('Usuário não existe!')
+        return biography
+      }
+
+      if (await biographyRepository.findByUserId(userId)) {
+        await biography.addErrors('Esse usuário ja tem uma biografia!')
         return biography
       }
 
@@ -94,22 +93,35 @@ module.exports = {
   },
 
   async update(
-    { fullName, nickname, birthday, aboutYou, techs },
+    { fullName, nickname, birthday, aboutYou, addTechs, removeTechs },
     bioId,
     userId,
   ) {
     try {
-      const biography = new BiographyModel()
+      let biography = new BiographyModel()
+      const user = await userRepository.findById(userId)
 
-      if (await userRepository.findById(userId)) {
-        if (!(await biographyRepository.findById(userId, bioId))) {
-          await biography.addErrors('Operação não autorizada!')
-        }
-      } else {
-        await biography.addErrors(
-          'Operação não autorizada! Usuário não existe!',
-        )
+      if (!user) {
+        await biography.addErrors('Usuário não existe!')
+        return biography
       }
+
+      if (user.biography.id !== bioId) {
+        await biography.addErrors('Operação não autorizada!')
+        return biography
+      }
+
+      biography = await biographyRepository.findById(userId, bioId)
+
+      // if (await userRepository.findById(userId)) {
+      //   if (!(await biographyRepository.findById(userId, bioId))) {
+      //     await biography.addErrors('Operação não autorizada!')
+      //   }
+      // } else {
+      //   await biography.addErrors(
+      //     'Operação não autorizada! Usuário não existe!',
+      //   )
+      // }
 
       const data = {}
 
@@ -137,11 +149,11 @@ module.exports = {
         }
       }
 
-      if (techs) {
-        if (Array.isArray(techs)) {
-          if (techs.length > 0) {
+      if (addTechs) {
+        if (Array.isArray(addTechs)) {
+          if (addTechs.length > 0) {
             const tech = new TechModel()
-            for (const techId of techs) {
+            for (const techId of addTechs) {
               if (techId <= 0) {
                 await tech.addErrors(`Tech de id ${techId} é inválida`)
               } else {
@@ -157,13 +169,65 @@ module.exports = {
             if (techErrors.length > 0) {
               await biography.addErrors(techErrors)
             } else {
-              data.techs = techs
+              data.addTechs = addTechs
             }
-          } else {
-            data.techs = []
           }
         } else {
-          await biography.addErrors('Techs Inválidas!')
+          await biography.addErrors('addTechs Inválidas!')
+        }
+      }
+
+      if (removeTechs) {
+        if (Array.isArray(removeTechs)) {
+          if (removeTechs.length > 0) {
+            const tech = new TechModel()
+            for (const techId of removeTechs) {
+              if (techId <= 0) {
+                await tech.addErrors(`Tech de id ${techId} é inválida`)
+              } else {
+                const techFinded = await techRepository.findById(techId)
+
+                if (!techFinded) {
+                  await tech.addErrors(`Tech de id ${techId} não existe`)
+                } else {
+                  const techMatch = await biography.techs.find((values) => {
+                    return values.id === techId
+                  })
+
+                  if (!techMatch) {
+                    await biography.addErrors(
+                      `Tech de id ${techId} não está relacionada com a biography`,
+                    )
+                  }
+                }
+              }
+            }
+
+            const techErrors = await tech.getErrors()
+            if (techErrors.length > 0) {
+              await biography.addErrors(techErrors)
+            } else {
+              data.removeTechs = removeTechs
+            }
+          }
+        } else {
+          await biography.addErrors('removeTechs Inválidas!')
+        }
+      }
+
+      if (addTechs && removeTechs) {
+        if (Array.isArray(addTechs) && Array.isArray(removeTechs)) {
+          if (addTechs.length > 0 && removeTechs.length > 0) {
+            for (const addTechId of addTechs) {
+              for (const removeTechId of removeTechs) {
+                if (addTechId === removeTechId) {
+                  await biography.addErrors(
+                    `Tech de id ${addTechId} esta sendo adicionada e removida ao mesmo tempo`,
+                  )
+                }
+              }
+            }
+          }
         }
       }
 

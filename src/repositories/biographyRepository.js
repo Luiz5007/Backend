@@ -28,8 +28,12 @@ module.exports = {
 
       const biographyUpdated = await this.findById(userId, bioId)
 
-      if (data.techs) {
-        await biographyUpdated.setTechs(data.techs)
+      if (data.addTechs) {
+        await biographyUpdated.addTechs(data.addTechs)
+      }
+
+      if (data.removeTechs) {
+        await biographyUpdated.removeTechs(data.removeTechs)
       }
 
       const biography = await this.findById(userId, bioId)
