@@ -113,16 +113,6 @@ module.exports = {
 
       biography = await biographyRepository.findById(userId, bioId)
 
-      // if (await userRepository.findById(userId)) {
-      //   if (!(await biographyRepository.findById(userId, bioId))) {
-      //     await biography.addErrors('Operação não autorizada!')
-      //   }
-      // } else {
-      //   await biography.addErrors(
-      //     'Operação não autorizada! Usuário não existe!',
-      //   )
-      // }
-
       const data = {}
 
       if (fullName) {
